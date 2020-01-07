@@ -30,7 +30,7 @@ class FavoritasActivity : AppCompatActivity() {
         val db= DBOpenHelper.getInstance(this)
         db?.use {
            select("Favoritos").exec {
-
+                if(this.count>0){
                this.moveToFirst()
                do{
                    items.add(MovieFavorite(
@@ -38,7 +38,8 @@ class FavoritasActivity : AppCompatActivity() {
                        this.getString(3)?:"",
                        this.getString(2)?:"",
                             this.getDouble(4)))
-               }while (this.moveToNext())
+               }while (this.moveToNext())}
+
            }
         }
 

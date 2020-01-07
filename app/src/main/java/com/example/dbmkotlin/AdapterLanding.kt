@@ -27,7 +27,7 @@ data class AdapterLanding( val data: List<ResultsItem>): RecyclerView.Adapter<Ad
                 itemView.txtyearitem.text = releaseDate
                 itemView.txtvoteitem.text = voteAverage.toString()
                 var Urll: String = "https://image.tmdb.org/t/p/w500"
-                Picasso.with(itemView.context).load(Urll + posterPath).into(itemView.imgitem)
+                Picasso.with(itemView.context).load(Urll + backdropPath).into(itemView.imgitem)
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailActivity::class.java)
@@ -35,7 +35,7 @@ data class AdapterLanding( val data: List<ResultsItem>): RecyclerView.Adapter<Ad
                     intent.putExtra("año", releaseDate)
                     intent.putExtra("votes", voteAverage)
                     intent.putExtra("desc", overview)
-                    intent.putExtra("imagen", posterPath)
+                    intent.putExtra("imagen", backdropPath)
                     intent.putExtra("id", id)
 
 

@@ -1,5 +1,6 @@
 package com.example.dbmkotlin
 
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,20 @@ class AdapterFM(val data: List<MovieFavorite>):RecyclerView.Adapter<AdapterFM.Ho
                 itemView.txttitleitem.text = titulo?:""
                 itemView.txtyearitem.text = año?:""
                 itemView.txtvoteitem.text = votos.toString()?:""
+
+                itemView.setOnClickListener {
+                    val iddd= 1223223
+                    val stri= "asadsdff"
+
+                    val intent = Intent(itemView.context, DetailActivity::class.java)
+                    intent.putExtra("titulo", titulo)
+                    intent.putExtra("año", año)
+                    intent.putExtra("votes", votos)
+                    intent.putExtra("desc", desc)
+                    intent.putExtra("imagen", stri)
+                    intent.putExtra("id", iddd)
+                    itemView.context.startActivity(intent)
+                }
 
             }
 

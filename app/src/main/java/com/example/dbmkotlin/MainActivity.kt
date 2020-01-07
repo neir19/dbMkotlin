@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility= View.VISIBLE
         var layoutManager= GridLayoutManager(this, 2)
         recycler.layoutManager = layoutManager
+
         btnseeFavorites.setOnClickListener {
             val intent= Intent(this, FavoritasActivity::class.java)
             startActivity(intent)
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                             llenarReccler(response.body()?.results)
                             progressBar.visibility=View.GONE
 
+
                         }
                     }
 
@@ -73,36 +75,36 @@ class MainActivity : AppCompatActivity() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
 
-                        visibleItemCount= layoutManager.childCount
-                        totalItemCount= layoutManager.itemCount
-                        pastVisibleItems= layoutManager.findFirstVisibleItemPosition()
+                        visibleItemCount = layoutManager.childCount
+                        totalItemCount = layoutManager.itemCount
+                        pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
 
 
-                        if(dy>0){
-                            if(isLoding){
+                        if (dy > 0) {
+                            if (isLoding) {
                                 Log.e("entro1", "entro")
-                                if(totalItemCount>previus_total) {
+                                if (totalItemCount > previus_total) {
                                     Log.e("entro2", "entro")
                                     isLoding = false
                                     previus_total = totalItemCount
-                                }else{
-                                    isLoding= true
-
                                 }
+
                             }
 
 
-                            if(isLoding&&((totalItemCount-visibleItemCount)<=(pastVisibleItems+view_threshold))){
+
+                            if ((!isLoding ) && ((totalItemCount - visibleItemCount) <= (pastVisibleItems + view_threshold))) {
                                 Log.e("entro3", "entro")
+
                                 page++
                                 performPagenation(retrofit)
-                                isLoding= true
+                                isLoding = true
 
                             }
                         }
 
-
                     }
+
 
                 })
 
@@ -130,7 +132,9 @@ class MainActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
                     if(response.isSuccessful){
                     list.addItem(response.body()?.results as ArrayList<ResultsItem>)
-                        Log.e("pagina","page $page")
+                        Log.e("pagina","$page")
+
+
 
                     }
                     progressBar.visibility= View.GONE
