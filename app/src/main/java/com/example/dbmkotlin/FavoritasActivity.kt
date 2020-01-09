@@ -2,6 +2,7 @@ package com.example.dbmkotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dbmkotlin.Model.MovieFavorite
@@ -31,8 +32,10 @@ class FavoritasActivity : AppCompatActivity() {
         db?.use {
            select("Favoritos").exec {
                 if(this.count>0){
+                    items.clear()
                this.moveToFirst()
                do{
+
                    items.add(MovieFavorite(
                        this.getString(1)?:"",
                        this.getString(3)?:"",

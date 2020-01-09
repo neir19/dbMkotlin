@@ -28,6 +28,7 @@ class AdapterFM(val data: List<MovieFavorite>):RecyclerView.Adapter<AdapterFM.Ho
                 itemView.setOnClickListener {
                     val iddd= 1223223
                     val stri= "asadsdff"
+                    val ubi= "favorite"
 
                     val intent = Intent(itemView.context, DetailActivity::class.java)
                     intent.putExtra("titulo", titulo)
@@ -36,6 +37,8 @@ class AdapterFM(val data: List<MovieFavorite>):RecyclerView.Adapter<AdapterFM.Ho
                     intent.putExtra("desc", desc)
                     intent.putExtra("imagen", stri)
                     intent.putExtra("id", iddd)
+                    intent.putExtra("ubicacion",ubi)
+
                     itemView.context.startActivity(intent)
                 }
 

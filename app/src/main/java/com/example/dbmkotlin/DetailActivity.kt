@@ -1,6 +1,7 @@
 package com.example.dbmkotlin
 
 import android.animation.Animator
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_descr.*
+import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 
@@ -30,6 +32,7 @@ class DetailActivity : AppCompatActivity() {
             val descr = it.getString("desc")
             val vote= it.getDouble("votes")
             val idd= it.getInt("id")
+            val ubi=it.getString("ubicacion")
             txttitledetail.text=it.getString("titulo")
             txtyeardetail.text=it.getString("año")
             txtdescdetail.text= it.getString("desc")
@@ -37,12 +40,19 @@ class DetailActivity : AppCompatActivity() {
             Picasso.with(this).load(Urlll+it.getString("imagen")).into(imgdetail)
             btnFavorites.setOnClickListener {
 
-                val interpolator= AnimationUtils.loadInterpolator(baseContext,android.R.interpolator.fast_out_slow_in)
+                if (ubi.equals("detail")){
+
+
+
+                val interpolator = AnimationUtils.loadInterpolator(
+                    baseContext,
+                    android.R.interpolator.fast_out_slow_in
+                )
                 btnFavorites.animate()
                     .rotation(180f)
                     .setInterpolator(interpolator)
                     .setDuration(600)
-                    .setListener(object : Animator.AnimatorListener{
+                    .setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {
 
                         }
@@ -65,30 +75,30 @@ class DetailActivity : AppCompatActivity() {
                     })
 
 
-                db?.use{
-                    var count= 0
+                db?.use {
+                    var count = 0
                     select("Favoritos").exec {
-                        if(this.count>0){
+                        if (this.count > 0) {
 
 
+                            this.moveToFirst()
+                            do {
 
-                        this.moveToFirst()
-                        do{
+                                if (idd == this.getInt(0)) {
+                                    count++
 
-                            if(idd==this.getInt(0)){
-                                count++
-                                Log.e("contador1","$count")
-                                break
-                            }else{
-                                count= 0
-                            }
 
-                        }while (this.moveToNext())
+                                    break
+                                } else {
+                                    count = 0
+                                }
+
+                            } while (this.moveToNext())
                         }
 
                     }
-                    Log.e("contador2","$count")
-                    if(count==0) {
+
+                    if (count == 0) {
 
                         val idPr = "id" to idd
                         val namePr = "titulo" to titl
@@ -98,14 +108,25 @@ class DetailActivity : AppCompatActivity() {
                         insert("Favoritos", idPr, namePr, yearPr, descPr, votesPr)
                     }
 
-                    }
-                Toast.makeText(this,"se guardo en favoritos", Toast.LENGTH_SHORT).show()
+                }
+                Toast.makeText(this, "se guardo en favoritos", Toast.LENGTH_SHORT).show()
+            }
+                else if(ubi.equals("favorite")){
 
+                    db?.use {
+                       val  numRowsDelected= delete("Favoritos","id={iid}","iid" to idd)
+
+                    }
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                       }
+                    }
+                }
                 }
 
             }
 
-        }
-    }
+
 
 

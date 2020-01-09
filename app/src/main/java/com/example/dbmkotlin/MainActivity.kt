@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     val apikey= "02e4b138dacaf8151088a361d6e75d01"
     lateinit var list: ListaMovie
 
+
     //VAriables for pagination
 
     private  var isLoding: Boolean = true
@@ -35,12 +37,14 @@ class MainActivity : AppCompatActivity() {
     private  var previus_total=0
     private var view_threshold=20
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         progressBar.visibility= View.VISIBLE
         var layoutManager= GridLayoutManager(this, 2)
+
         recycler.layoutManager = layoutManager
 
         btnseeFavorites.setOnClickListener {
@@ -118,6 +122,8 @@ class MainActivity : AppCompatActivity() {
         list= ListaMovie(results as ArrayList<ResultsItem>)
         val adapter =AdapterLanding(list.lista)
         recycler.setHasFixedSize(true)
+        val animation=AnimationUtils.loadAnimation(this,R.anim.fade_transition_animation)
+        recycler.startAnimation(animation)
         recycler.adapter= adapter
     }
     private fun performPagenation(retrofit: Retrofit){
