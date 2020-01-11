@@ -19,11 +19,6 @@ class FavoritasActivity : AppCompatActivity() {
             recyF.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             val adapter = AdapterFM(items)
             recyF.adapter = adapter
-
-
-
-
-
     }
 
     override fun onResume() {

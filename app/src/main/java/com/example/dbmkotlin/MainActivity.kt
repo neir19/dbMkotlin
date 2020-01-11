@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Adapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
 
     //VAriables for pagination
-
     private var isLoding: Boolean = true
     private var pastVisibleItems = 0
     private var visibleItemCount = 0
@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //val conetion:Boolean= accessInternet()
         var layoutManager = GridLayoutManager(this, 2)
 
         recycler.layoutManager = layoutManager
@@ -56,57 +55,43 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         if(accessInternet()) {
-
             progressBar.visibility = View.VISIBLE
-
-
-
-
             val endpoints = retrofit.create(Endpoints::class.java)
             endpoints.getList(apikey, page)
                 .enqueue(object : Callback<Movies> {
                     override fun onFailure(call: Call<Movies>, t: Throwable) {
-
                     }
-
                     override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
                         if (response.isSuccessful) {
                             llenarReccler(response.body()?.results)
                             progressBar.visibility = View.GONE
-
-
                         }
                     }
-
                 })
                     //pagination
-                scrollPagination(layoutManager)
-
-
-
-
+            scrollPagination(layoutManager)
         }else{
-
             val adapter = AdapterFM(listSQLite )
             recycler.setHasFixedSize(true)
             val animation = AnimationUtils.loadAnimation(this, R.anim.fade_transition_animation)
             recycler.startAnimation(animation)
             recycler.adapter = adapter
         }
-
     }
-
     private fun llenarReccler(results: List<ResultsItem?>?) {
 
-
-        list = ListaMovie(results as ArrayList<ResultsItem>)
-        val adapter = AdapterLanding(list.lista)
         recycler.setHasFixedSize(true)
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_transition_animation)
         recycler.startAnimation(animation)
-        recycler.adapter = adapter
-    }
+        list = ListaMovie(results as ArrayList<ResultsItem>)
 
+        val adapter = AdapterLanding(list.lista)
+        recycler.adapter = adapter
+
+
+
+
+    }
     private fun performPagenation(retrofit: Retrofit) {
         progressBar.visibility = View.VISIBLE
         val endpoints = retrofit.create(Endpoints::class.java)
@@ -130,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             })
 
     }
-
     private  fun llenarSQLiteP(list: List<ResultsItem>){
         val db= DBOpenHelper.getInstance(this)
         var count: Int=0
@@ -181,7 +165,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     override fun onResume() {
         super.onResume()
         val db= DBOpenHelper.getInstance(this)
