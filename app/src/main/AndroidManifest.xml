@@ -3,6 +3,8 @@
     package="com.example.dbmkotlin">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -11,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FavoriteDetailActivity"></activity>
         <activity android:name=".FavoritasActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".MainActivity">

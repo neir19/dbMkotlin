@@ -1,10 +1,15 @@
-package com.example.dbmkotlin
+package com.example.dbmkotlin.Model
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dbmkotlin.Model.MovieFavorite
+import com.example.dbmkotlin.DetailActivity
+import com.example.dbmkotlin.FavoritasActivity
+import com.example.dbmkotlin.R
+import com.example.dbmkotlin.inflate
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.itemlanding.view.*
 
 class AdapterFM(val data: List<MovieFavorite>):RecyclerView.Adapter<AdapterFM.Holder>() {
@@ -21,13 +26,15 @@ class AdapterFM(val data: List<MovieFavorite>):RecyclerView.Adapter<AdapterFM.Ho
     class  Holder(ItemView : View?):RecyclerView.ViewHolder(ItemView!!){
         fun bindView(movieFavorite: MovieFavorite){
             with(movieFavorite){
+                var Urll: String = "https://image.tmdb.org/t/p/w500"
                 itemView.txttitleitem.text = titulo?:""
                 itemView.txtyearitem.text = año?:""
                 itemView.txtvoteitem.text = votos.toString()?:""
+                Picasso.with(itemView.context as Activity).load(Urll+img).error(R.mipmap.descarga).into(itemView.imgitem)
 
                 itemView.setOnClickListener {
-                    val iddd= 1223223
-                    val stri= "asadsdff"
+
+
                     val ubi= "favorite"
 
                     val intent = Intent(itemView.context, DetailActivity::class.java)
@@ -35,11 +42,13 @@ class AdapterFM(val data: List<MovieFavorite>):RecyclerView.Adapter<AdapterFM.Ho
                     intent.putExtra("año", año)
                     intent.putExtra("votes", votos)
                     intent.putExtra("desc", desc)
-                    intent.putExtra("imagen", stri)
-                    intent.putExtra("id", iddd)
+                    intent.putExtra("imagen", img)
+                    intent.putExtra("id", id)
                     intent.putExtra("ubicacion",ubi)
 
                     itemView.context.startActivity(intent)
+
+
                 }
 
             }

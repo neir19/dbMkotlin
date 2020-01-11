@@ -1,4 +1,4 @@
-package com.example.dbmkotlin
+package com.example.dbmkotlin.Model
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dbmkotlin.Model.ResultsItem
+import com.example.dbmkotlin.DetailActivity
+import com.example.dbmkotlin.R
+import com.example.dbmkotlin.inflate
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.itemlanding.view.*
 
@@ -28,7 +30,9 @@ data class AdapterLanding( val data: List<ResultsItem>): RecyclerView.Adapter<Ad
     class Holder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         fun bindVIew(resultsItem: ResultsItem) {
             with(resultsItem) {
-                val animation=AnimationUtils.loadAnimation(itemView.context as Activity,R.anim.fade_transition_animation)
+                val animation=AnimationUtils.loadAnimation(itemView.context as Activity,
+                    R.anim.fade_transition_animation
+                )
                 itemView.startAnimation(animation)
                 itemView.txttitleitem.text = title
                 itemView.txtyearitem.text = releaseDate
