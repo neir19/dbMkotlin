@@ -47,19 +47,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //val conetion:Boolean= accessInternet()
-        val cm=this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var layoutManager = GridLayoutManager(this, 2)
 
-        val networkInfo:NetworkInfo?=cm.activeNetworkInfo
+        recycler.layoutManager = layoutManager
+
         btnseeFavorites.setOnClickListener {
             val intent = Intent(this, FavoritasActivity::class.java)
             startActivity(intent)
         }
-        if(networkInfo!=null && networkInfo.isConnected) {
+        if(accessInternet()) {
 
             progressBar.visibility = View.VISIBLE
-            var layoutManager = GridLayoutManager(this, 2)
 
-            recycler.layoutManager = layoutManager
+
 
 
             val endpoints = retrofit.create(Endpoints::class.java)
@@ -79,51 +79,15 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 })
+                    //pagination
+                scrollPagination(layoutManager)
 
 
 
-            recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-
-                    visibleItemCount = layoutManager.childCount
-                    totalItemCount = layoutManager.itemCount
-                    pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
-
-
-                    if (dy > 0) {
-                        if (isLoding) {
-                            Log.e("entro1", "entro")
-                            if (totalItemCount > previus_total) {
-
-                                isLoding = false
-                                previus_total = totalItemCount
-                            }
-
-                        }
-
-
-
-                        if ((!isLoding) && ((totalItemCount - visibleItemCount) <= (pastVisibleItems + view_threshold))) {
-
-
-                            page++
-                            performPagenation(retrofit)//paginacion
-                            isLoding = true
-
-                        }
-                    }
-
-                }
-
-
-            })
         }else{
-            var layoutManager = GridLayoutManager(this, 2)
-            recycler.layoutManager = layoutManager
-            val adapter = AdapterFM(listSQLite as ArrayList<MovieFavorite>)
+
+            val adapter = AdapterFM(listSQLite )
             recycler.setHasFixedSize(true)
             val animation = AnimationUtils.loadAnimation(this, R.anim.fade_transition_animation)
             recycler.startAnimation(animation)
@@ -245,8 +209,49 @@ class MainActivity : AppCompatActivity() {
     private fun accessInternet(): Boolean {
         val cm=this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         //val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo:NetworkInfo=cm.activeNetworkInfo
+        val networkInfo:NetworkInfo?=cm.activeNetworkInfo
         return networkInfo!=null && networkInfo.isConnected
+    }
+    fun scrollPagination(layoutManager:GridLayoutManager){
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                visibleItemCount = layoutManager.childCount
+                totalItemCount = layoutManager.itemCount
+                pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+
+
+                if (dy > 0) {
+                    if (isLoding) {
+                        Log.e("entro1", "entro")
+                        if (totalItemCount > previus_total) {
+
+                            isLoding = false
+                            previus_total = totalItemCount
+                        }
+
+                    }
+
+
+
+                    if ((!isLoding) && ((totalItemCount - visibleItemCount) <= (pastVisibleItems + view_threshold))) {
+
+
+                        page++
+                        performPagenation(retrofit)//paginacion
+                        isLoding = true
+
+                    }
+                }
+
+            }
+
+
+        })
+
     }
 
 }

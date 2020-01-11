@@ -58,31 +58,24 @@ class DetailActivity : AppCompatActivity() {
                 animation(btnFavorites,this)
 
                     //crearTabla
-
-                    insertTable(idd,titl,yer,descr,imgg,vote,this)
+                     insertTable(idd,titl,yer,descr,imgg,vote,this)
                 Toast.makeText(this, "se guardo en favoritos", Toast.LENGTH_SHORT).show()
             }
                 else if(ubi.equals("favorite")){
-
+                    //eliminar
                 delete(this, idd)
                     val intent = Intent(this, FavoritasActivity::class.java)
 
                     startActivity(intent)
-                    finish()
-
-
-
-                    }
-
-
-                       }
-                    }
-                }
+                    finish() }
+            }
+        }
+    }
 
 
 
 
-                }
+}
     fun animation(btnFavorites:com.google.android.material.floatingactionbutton.FloatingActionButton,baseContext:Context){
         val interpolator = AnimationUtils.loadInterpolator(
             baseContext,
