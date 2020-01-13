@@ -15,12 +15,10 @@ class FavoritasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favoritas)
 
-
             recyF.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             val adapter = AdapterFM(items)
             recyF.adapter = adapter
     }
-
     override fun onResume() {
         super.onResume()
         items.clear()
@@ -31,7 +29,6 @@ class FavoritasActivity : AppCompatActivity() {
                     items.clear()
                this.moveToFirst()
                do{
-
                    items.add(MovieFavorite(
                              this.getInt(0),
                        this.getString(1)?:"",
@@ -39,19 +36,15 @@ class FavoritasActivity : AppCompatActivity() {
                        this.getString(2)?:"",
                        this.getString(4)?:"",
                             this.getDouble(5)))
-
-               }while (this.moveToNext())}
-
+               }while (this.moveToNext())
+                }else finish()
            }
         }
-
     }
-
     override fun onPause() {
         super.onPause()
         finish()
     }
-
     override fun onStop() {
         super.onStop()
         finish()

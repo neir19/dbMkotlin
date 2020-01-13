@@ -8,6 +8,8 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="230dp"
@@ -24,15 +26,18 @@
                 android:layout_height="match_parent"
                 android:background="@mipmap/zz"
                 android:scaleType="centerCrop"/>
+
             <Toolbar
                 android:id="@+id/toolbar"
                 app:layout_collapseMode="pin"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"/>
 
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
@@ -60,6 +65,17 @@
         app:backgroundTint="@color/black"
         android:src="@mipmap/ic_launcher_starw"
         />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnsearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:src="@mipmap/ic_launcher_"
+        app:backgroundTint="@color/black"
+        android:layout_margin="16dp"
+
+        />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

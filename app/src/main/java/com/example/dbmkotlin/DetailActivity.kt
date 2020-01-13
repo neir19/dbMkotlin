@@ -112,6 +112,7 @@ class DetailActivity : AppCompatActivity() {
     }
     fun insertTable(idd: Int,titl:String,yer:String,descr:String,imgg:String,vote:Double,ctx: Context){
         val db= DBOpenHelper.getInstance(ctx)
+        var count = 0
         db?.use {
             var count = 0
             select("Favoritos").exec {

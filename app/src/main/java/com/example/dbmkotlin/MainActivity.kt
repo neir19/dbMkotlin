@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, FavoritasActivity::class.java)
             startActivity(intent)
         }
+        btnsearch.setOnClickListener {
+            val fm=supportFragmentManager
+            val myfragment= Myfragment()
+            myfragment.show(fm,"simple Fragment")
+        }
         if(accessInternet()) {
             progressBar.visibility = View.VISIBLE
             val endpoints = retrofit.create(Endpoints::class.java)
@@ -79,12 +84,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun llenarReccler(results: List<ResultsItem?>?) {
-
         recycler.setHasFixedSize(true)
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_transition_animation)
         recycler.startAnimation(animation)
         list = ListaMovie(results as ArrayList<ResultsItem>)
-
         val adapter = AdapterLanding(list.lista)
         recycler.adapter = adapter
 
@@ -106,14 +109,10 @@ class MainActivity : AppCompatActivity() {
                         list.addItem(response.body()?.results as ArrayList<ResultsItem>)
                         llenarSQLiteP(list.lista)
                         Log.e("pagina", "$page")
-
-
                     }
                     progressBar.visibility = View.GONE
                 }
-
             })
-
     }
     private  fun llenarSQLiteP(list: List<ResultsItem>){
         val db= DBOpenHelper.getInstance(this)
@@ -129,14 +128,11 @@ class MainActivity : AppCompatActivity() {
                         if (item.id == this.getInt(0)) {
                             count++
                             break
-
-
                         } else {
                             count = 0
                         }
-
-
                     }while (this.moveToNext())
+
                     if(count==0) {
                         val idPr = "id" to item.id
                         val namePr = "titulo" to item.originalTitle
@@ -145,8 +141,6 @@ class MainActivity : AppCompatActivity() {
                         val imgPr  ="img" to item.backdropPath
                         val votesPr = "votos" to item.voteAverage
                         insert("Popular", idPr, namePr, yearPr, descPr,imgPr, votesPr)
-
-
                     }
                     }else{
                     val idPr = "id" to item.id
@@ -156,8 +150,6 @@ class MainActivity : AppCompatActivity() {
                     val imgPr  ="img" to item.backdropPath
                     val votesPr = "votos" to item.voteAverage
                     insert("Popular", idPr, namePr, yearPr, descPr,imgPr, votesPr)
-
-
                 }
 
 
@@ -168,7 +160,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val db= DBOpenHelper.getInstance(this)
-
         db?.use {
             select("Popular").exec {
                 Log.e("tam","${this.count}")
@@ -191,50 +182,30 @@ class MainActivity : AppCompatActivity() {
     }
     private fun accessInternet(): Boolean {
         val cm=this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        //val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo:NetworkInfo?=cm.activeNetworkInfo
         return networkInfo!=null && networkInfo.isConnected
     }
     fun scrollPagination(layoutManager:GridLayoutManager){
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
                 visibleItemCount = layoutManager.childCount
                 totalItemCount = layoutManager.itemCount
                 pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
-
-
                 if (dy > 0) {
                     if (isLoding) {
-                        Log.e("entro1", "entro")
                         if (totalItemCount > previus_total) {
-
                             isLoding = false
                             previus_total = totalItemCount
                         }
-
                     }
-
-
-
                     if ((!isLoding) && ((totalItemCount - visibleItemCount) <= (pastVisibleItems + view_threshold))) {
-
-
                         page++
                         performPagenation(retrofit)//paginacion
                         isLoding = true
-
                     }
                 }
-
             }
-
-
         })
-
     }
-
 }
