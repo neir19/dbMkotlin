@@ -54,6 +54,7 @@ class Myfragment: DialogFragment() {
                                         startActivity(intent)
                                         dismiss()
 
+
                                     }
                                 }while(moveToNext())
 
